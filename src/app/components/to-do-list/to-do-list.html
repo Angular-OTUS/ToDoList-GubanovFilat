@@ -1,0 +1,19 @@
+<h1>Todo List</h1>
+
+<ul class="todoListContainer">
+  @for (task of tasks; track $index) {
+  <li class="todo">
+    <span class="todoText">{{ task }}</span>
+    <button type="submit" class="deleteButton">Delete</button>
+  </li>
+  } @empty {
+  <li>Todo list is empty</li>
+  }
+</ul>
+
+<div class="todoFormContainer">
+  <form>
+    <input placeholder="Add your new todo" />
+    <button type="submit">Add task</button>
+  </form>
+</div>
