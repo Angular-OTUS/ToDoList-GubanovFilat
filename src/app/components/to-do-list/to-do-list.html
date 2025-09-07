@@ -1,11 +1,8 @@
 <h1>Todo List</h1>
 
 <ul class="todoListContainer">
-  @for (task of tasks; track $index) {
-  <li class="todo">
-    <span class="todoText">{{ task }}</span>
-    <button type="submit" class="deleteButton">Delete</button>
-  </li>
+  @for (task of tasks; track task.id) {
+  <app-to-do-list-item [task]="task" (deleteTaskEvent)="onDelete(task.id)" />
   } @empty {
   <li>Todo list is empty</li>
   }
@@ -13,7 +10,19 @@
 
 <div class="todoFormContainer">
   <form>
-    <input placeholder="Add your new todo" />
-    <button type="submit">Add task</button>
+    <input
+      type="text"
+      placeholder="Add your new todo"
+      [(ngModel)]="newTaskDescription"
+      [ngModelOptions]="{ standalone: true }"
+      autofocus
+    />
+    <button
+      type="submit"
+      [disabled]="!newTaskDescription.trim()"
+      (click)="onAdd($event)"
+    >
+      Add task
+    </button>
   </form>
 </div>
