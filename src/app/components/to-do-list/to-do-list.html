@@ -1,5 +1,8 @@
 <h1>Todo List</h1>
 
+@if(isLoading) {
+<app-loader />
+} @else {
 <ul class="todoListContainer">
   @for (task of tasks; track task.id) {
   <app-to-do-list-item [task]="task" (deleteTaskEvent)="onDelete(task.id)" />
@@ -26,3 +29,4 @@
     </button>
   </form>
 </div>
+}
