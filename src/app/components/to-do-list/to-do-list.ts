@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Task } from '../../dto/Task';
 import { ToDoListItem } from '../to-do-list-item/to-do-list-item';
 import { Loader } from '../loader/loader';
+import { Button } from '../button/button';
 
 @Component({
   selector: 'app-to-do-list',
-  imports: [FormsModule, ToDoListItem, Loader],
+  imports: [FormsModule, ToDoListItem, Loader, Button],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.css',
 })
