@@ -1,0 +1,26 @@
+button {
+  height: 50px;
+  padding: 10px 15px;
+
+  border: none;
+  border-radius: 5px;
+
+  font-size: 1.5rem;
+
+  cursor: pointer;
+
+  background-color: beige;
+
+  transition: 0.3s;
+
+  &:hover {
+    filter: saturate(500%);
+  }
+
+  &:disabled {
+    cursor: unset;
+    background-color: unset;
+    color: grey;
+    border: 1px solid;
+  }
+}

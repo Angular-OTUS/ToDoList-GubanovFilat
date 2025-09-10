@@ -1,0 +1,24 @@
+:host {
+  user-select: none;
+}
+
+.spinner {
+  height: 50vmin;
+  pointer-events: none;
+  margin-bottom: 25px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spinner {
+    animation: loader-spin infinite 5s linear;
+  }
+}
+
+@keyframes loader-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -17,35 +17,22 @@ li {
     text-align: center;
   }
 
-  input,
-  button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.5rem;
-    height: 50px;
-  }
-
   input {
     width: 45%;
+    height: 50px;
+    padding: 10px 15px;
+
+    font-size: 1.5rem;
+
+    border: none;
+    border-radius: 5px;
+
     &:focus {
       outline: none;
     }
   }
 
-  button {
+  ::ng-deep button {
     margin-left: 20px;
-    cursor: pointer;
-    background-color: beige;
-    transition: 0.3s;
-    &:hover {
-      filter: saturate(500%);
-    }
-    &:disabled {
-      cursor: unset;
-      background-color: unset;
-      color: grey;
-      border: 1px solid;
-    }
   }
 }

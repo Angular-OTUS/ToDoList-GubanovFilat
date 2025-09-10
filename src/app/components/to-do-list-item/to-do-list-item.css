@@ -25,19 +25,18 @@
   margin-right: 10px;
 }
 
-.deleteButton {
-  font-size: 1.5rem;
+:host ::ng-deep .deleteButton {
+  height: unset;
+  padding: unset;
+  background-color: unset;
+
   background-image: url("/icon-delete.png");
   background-repeat: no-repeat;
   background-position: center left;
   background-size: 1.5rem 1.5rem;
   padding-left: 25px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: 0.3s;
-  &:hover {
-    color: red;
-    transform: scale(1.3);
-  }
+}
+:host ::ng-deep .deleteButton:hover {
+  color: red;
+  transform: scale(1.3);
 }
