@@ -23,7 +23,7 @@
     <app-button
       type="submit"
       [disabled]="!newTaskDescription.trim()"
-      title="Click the button to add your new task."
+      appTooltip="Click the button to add your new task."
       (click)="onAdd($event)"
     >
       Add task

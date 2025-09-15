@@ -1,11 +1,13 @@
 <li class="todo">
   <img src="/task.svg" class="todoIcon" />
 
-  <span class="todoText">{{ task.description }}</span>
+  <span class="todoText" appTooltip="{{ task.description }}">{{
+    task.description
+  }}</span>
 
   <app-button
     type="button"
-    title="Click the button to delete the task."
+    appTooltip="Click the button to delete the task."
     className="deleteButton"
     (click)="onDelete()"
   >

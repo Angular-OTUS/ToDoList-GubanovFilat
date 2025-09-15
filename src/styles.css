@@ -19,3 +19,16 @@ h1 {
   margin-bottom: 40px;
   margin-top: 24px;
 }
+
+.tooltip {
+  position: absolute;
+  transition: 1.3s;
+  max-width: 70vw;
+  font-size: 1.5rem;
+  color: #112d49;
+  background-color: beige;
+  border: 1px solid #112d49;
+  border-radius: 5px;
+  padding: 5px;
+  pointer-events: none;
+}

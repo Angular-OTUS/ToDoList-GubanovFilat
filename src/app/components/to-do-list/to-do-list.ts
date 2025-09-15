@@ -5,10 +5,11 @@ import { Task } from '../../dto/Task';
 import { ToDoListItem } from '../to-do-list-item/to-do-list-item';
 import { Loader } from '../loader/loader';
 import { Button } from '../button/button';
+import { Tooltip } from '../../directives/tooltip';
 
 @Component({
   selector: 'app-to-do-list',
-  imports: [FormsModule, ToDoListItem, Loader, Button],
+  imports: [FormsModule, ToDoListItem, Loader, Button, Tooltip],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.css',
 })
