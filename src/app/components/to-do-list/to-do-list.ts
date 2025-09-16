@@ -28,6 +28,10 @@ export class ToDoList implements OnInit {
         'consectetur adipiscing elit, ' +
         'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     ),
+    Task.of(
+      '12345678901234567890123456789012345678901234567890123' +
+      '45678901234567890123456789012345678901234567890'
+    ),
   );
 
   @ViewChild('textarea')

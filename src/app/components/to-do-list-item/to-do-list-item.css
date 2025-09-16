@@ -27,6 +27,7 @@
 .todoText {
   width: 100%;
   text-align: left;
+  overflow-wrap: anywhere;
 
   display: -webkit-box;
   -webkit-line-clamp: 1;
