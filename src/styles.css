@@ -9,6 +9,12 @@
     "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   color: white;
   background-color: #112d49;
@@ -18,4 +24,17 @@ h1 {
   font-size: 2.2rem;
   margin-bottom: 40px;
   margin-top: 24px;
+}
+
+.tooltip {
+  position: absolute;
+  transition: 1.3s;
+  max-width: 70vw;
+  font-size: 1.5rem;
+  color: #112d49;
+  background-color: beige;
+  border: 1px solid #112d49;
+  border-radius: 5px;
+  padding: 5px;
+  pointer-events: none;
 }

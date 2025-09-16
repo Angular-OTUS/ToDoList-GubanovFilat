@@ -13,12 +13,27 @@
   background-color: #fbfef9;
 
   user-select: none;
+
+  &:hover {
+    color: darkolivegreen;
+  }
+}
+
+.selectedTodo {
+  background-color: #e3fbd3;
+  color: darkolivegreen;
 }
 
 .todoText {
   width: 100%;
   text-align: left;
   overflow-wrap: anywhere;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .todoIcon {

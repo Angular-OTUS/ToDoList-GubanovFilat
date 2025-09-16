@@ -5,7 +5,12 @@
 } @else {
 <ul class="todoListContainer">
   @for (task of tasks; track task.id) {
-  <app-to-do-list-item [task]="task" (deleteTaskEvent)="onDelete(task.id)" />
+  <app-to-do-list-item
+    [task]="task"
+    [isSelected]="task.id === taskId"
+    (deleteTaskEvent)="onDelete(task.id)"
+    (click)="onItemClick(task.id)"
+  />
   } @empty {
   <li>Todo list is empty</li>
   }
@@ -13,21 +18,27 @@
 
 <div class="todoFormContainer">
   <form>
-    <input
-      type="text"
-      placeholder="Add your new todo"
-      [(ngModel)]="newTaskDescription"
+    <textarea
+      #textarea
+      [placeholder]="inputPlaceholder"
+      [(ngModel)]="taskDescription"
       [ngModelOptions]="{ standalone: true }"
+      (keydown)="onTextareaKeydown($event)"
       autofocus
-    />
-    <app-button
-      type="submit"
-      [disabled]="!newTaskDescription.trim()"
-      title="Click the button to add your new task."
-      (click)="onAdd($event)"
-    >
-      Add task
-    </app-button>
+      maxlength="130"
+      rows="2"
+      spellcheck="true"
+    ></textarea>
+    <div class="buttons">
+      <app-button
+        type="submit"
+        [disabled]="!taskDescription.trim()"
+        appTooltip="Click on the button to confirm the input."
+        (click)="onSave($event)"
+      >
+        Confirm
+      </app-button>
+    </div>
   </form>
 </div>
 }
