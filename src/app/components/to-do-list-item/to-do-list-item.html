@@ -1,4 +1,4 @@
-<li class="todo">
+<li class="todo" [class.selectedTodo]="isSelected">
   <img src="/task.svg" class="todoIcon" />
 
   <span class="todoText" appTooltip="{{ task.description }}">{{

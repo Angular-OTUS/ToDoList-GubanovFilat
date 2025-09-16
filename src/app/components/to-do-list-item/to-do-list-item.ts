@@ -14,6 +14,9 @@ export class ToDoListItem {
   @Input()
   public task!: Task;
 
+  @Input()
+  public isSelected!: boolean;
+
   @Output()
   protected deleteTaskEvent = new EventEmitter();
 
