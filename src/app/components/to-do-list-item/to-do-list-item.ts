@@ -20,7 +20,9 @@ export class ToDoListItem {
   @Output()
   protected deleteTaskEvent = new EventEmitter();
 
-  protected onDelete(): void {
+  protected onDelete(event: Event): void {
+    event.stopPropagation();
+
     this.deleteTaskEvent.emit(this.task.id);
   }
 }

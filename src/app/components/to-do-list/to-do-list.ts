@@ -6,6 +6,8 @@ import { ToDoListItem } from '../to-do-list-item/to-do-list-item';
 import { Loader } from '../loader/loader';
 import { Button } from '../button/button';
 import { Tooltip } from '../../directives/tooltip';
+import { TaskService } from '../../services/task-service';
+import { ToastService } from '../../services/toast-service';
 
 enum InputPlaceholder {
   ADD_NEW_TODO = 'Add your new task',
@@ -19,20 +21,7 @@ enum InputPlaceholder {
   styleUrl: './to-do-list.css',
 })
 export class ToDoList implements OnInit {
-  protected tasks = new Array<Task>(
-    Task.of('Buy a new gaming laptop'),
-    Task.of('Complete previous task'),
-    Task.of('Create some angular app'),
-    Task.of(
-      'Lorem ipsum dolor sit amet, ' +
-        'consectetur adipiscing elit, ' +
-        'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    ),
-    Task.of(
-      '12345678901234567890123456789012345678901234567890123' +
-      '45678901234567890123456789012345678901234567890'
-    ),
-  );
+  protected tasks: Array<Task> = new Array();
 
   @ViewChild('textarea')
   private textarea!: ElementRef;
@@ -44,14 +33,45 @@ export class ToDoList implements OnInit {
 
   protected isLoading = true;
 
+  constructor(
+    private taskService: TaskService,
+    private toastService: ToastService,
+  ) {}
+
   public ngOnInit(): void {
     setTimeout(() => {
+      try {
+        this.tasks = this.taskService.getTasks();
+      } catch (error) {
+        this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
+      }
+
       this.isLoading = false;
     }, 1500);
   }
 
+  protected onReload(): void {
+    try {
+      this.tasks = this.taskService.getTasks();
+
+      this.toastService.success('Congratulations!', 'The tasks information has been successfully reloaded from storage.');
+    } catch (error) {
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
+    }
+
+    this.setFocusIntoTextarea();
+  }
+
   protected onDelete(taskId: string): void {
-    this.tasks = this.tasks.filter((task) => task.id !== taskId);
+    try {
+      this.taskService.deleteTask(taskId);
+
+      this.tasks = this.tasks.filter((task) => task.id !== taskId);
+
+      this.toastService.success('Congratulations!', 'The task has been successfully deleted from storage.');
+    } catch (error) {
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
+    }
 
     this.setFocusIntoTextarea();
   }
@@ -65,12 +85,28 @@ export class ToDoList implements OnInit {
       return;
     }
 
-    this.saveTask();
+    try {
+      const task = this.taskService.saveTask(this.taskId, this.taskDescription);
 
-    this.taskDescription = '';
-    this.taskId = null;
+      if (!this.taskId) {
+        this.tasks.push(task);
+      } else {
+        const index = this.tasks.findIndex((item) => item.id === task.id);
+        if (index != -1) {
+          this.tasks[index] = task;
+        }
+      }
 
-    this.inputPlaceholder = InputPlaceholder.ADD_NEW_TODO;
+      this.taskDescription = '';
+      this.taskId = null;
+
+      this.inputPlaceholder = InputPlaceholder.ADD_NEW_TODO;
+
+      this.toastService.success('Congratulations!', 'The task has been successfully saved to storage.');
+    } catch (error) {
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
+    }
+
     this.setFocusIntoTextarea();
   }
 
@@ -95,18 +131,5 @@ export class ToDoList implements OnInit {
 
   private setFocusIntoTextarea() {
     (this.textarea.nativeElement as HTMLTextAreaElement).focus();
-  }
-
-  private saveTask() {
-    if (this.taskId === null) {
-      this.tasks.push(Task.of(this.taskDescription));
-    } else {
-      const task = this.tasks.find((task) => task.id === this.taskId);
-      if (task) {
-        task.description = this.taskDescription;
-      } else {
-        this.tasks.push(Task.of(this.taskDescription));
-      }
-    }
   }
 }
