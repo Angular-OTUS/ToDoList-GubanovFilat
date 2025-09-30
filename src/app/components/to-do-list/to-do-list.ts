@@ -7,6 +7,7 @@ import { Loader } from '../loader/loader';
 import { Button } from '../button/button';
 import { Tooltip } from '../../directives/tooltip';
 import { TaskService } from '../../services/task-service';
+import { ToastService } from '../../services/toast-service';
 
 enum InputPlaceholder {
   ADD_NEW_TODO = 'Add your new task',
@@ -32,16 +33,17 @@ export class ToDoList implements OnInit {
 
   protected isLoading = true;
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private toastService: ToastService,
+  ) {}
 
   public ngOnInit(): void {
     setTimeout(() => {
       try {
         this.tasks = this.taskService.getTasks();
       } catch (error) {
-        alert(
-          'We are really sorry!\nSomething went wrong when accessing storage.',
-        );
+        this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
       }
 
       this.isLoading = false;
@@ -52,13 +54,9 @@ export class ToDoList implements OnInit {
     try {
       this.tasks = this.taskService.getTasks();
 
-      alert(
-        'Congratulations!\nThe tasks information has been successfully reloaded from storage.',
-      );
+      this.toastService.success('Congratulations!', 'The tasks information has been successfully reloaded from storage.');
     } catch (error) {
-      alert(
-        'We are really sorry!\nSomething went wrong when accessing storage.',
-      );
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
     }
 
     this.setFocusIntoTextarea();
@@ -70,13 +68,9 @@ export class ToDoList implements OnInit {
 
       this.tasks = this.tasks.filter((task) => task.id !== taskId);
 
-      alert(
-        'Congratulations!\nThe task has been successfully deleted from storage.',
-      );
+      this.toastService.success('Congratulations!', 'The task has been successfully deleted from storage.');
     } catch (error) {
-      alert(
-        'We are really sorry!\nSomething went wrong when accessing storage.',
-      );
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
     }
 
     this.setFocusIntoTextarea();
@@ -108,13 +102,9 @@ export class ToDoList implements OnInit {
 
       this.inputPlaceholder = InputPlaceholder.ADD_NEW_TODO;
 
-      alert(
-        'Congratulations!\nThe task has been successfully saved to storage.',
-      );
+      this.toastService.success('Congratulations!', 'The task has been successfully saved to storage.');
     } catch (error) {
-      alert(
-        'We are really sorry!\nSomething went wrong when accessing storage.',
-      );
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
     }
 
     this.setFocusIntoTextarea();

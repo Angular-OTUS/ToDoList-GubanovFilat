@@ -1,0 +1,53 @@
+.toastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 400px;
+}
+
+.toast {
+  padding: 10px 15px;
+
+  border-radius: 5px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  animation: fadein 0.7s ease-in-out;
+
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateX(-10px);
+  }
+
+  &.success {
+    background-color: lightgreen;
+    color: darkolivegreen;
+  }
+
+  &.error {
+    background-color: pink;
+    color: darkred;
+  }
+}
+
+@keyframes fadein {
+  from {
+    transform: translateY(200%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

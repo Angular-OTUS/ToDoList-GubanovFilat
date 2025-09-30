@@ -1,0 +1,9 @@
+<div class="toastContainer">
+  @for (toast of toasts; track toast.id) {
+    <div class="toast" [class]="getClass(toast.category)">
+      <strong>{{ toast.title }}</strong>
+      <br />
+      <span>{{ toast.message }}</span>
+    </div>
+  }
+</div>
