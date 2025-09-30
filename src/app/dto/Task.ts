@@ -13,4 +13,8 @@ export class Task {
   static of(description: string) {
     return new Task(uuid(), description);
   }
+
+  clone() {
+    return new Task(this.id, this.description);
+  }
 }
