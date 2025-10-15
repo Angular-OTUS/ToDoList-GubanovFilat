@@ -66,4 +66,16 @@ export class TaskServiceFake extends TaskService {
 
     this.tasks = this.tasks.filter((task) => task.id !== taskId);
   }
+
+  public override toggleTaskCompletionState(taskId: string): void {
+    if (!this.isSuccess()) {
+      throw new Error();
+    }
+
+    this.tasks.forEach((task) => {
+      if (task.id === taskId) {
+        task.isCompleted = !task.isCompleted;
+      }
+    });
+  }
 }

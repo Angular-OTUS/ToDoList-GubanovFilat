@@ -9,6 +9,7 @@
     [task]="task"
     [isSelected]="task.id === taskId"
     (deleteTaskEvent)="onDelete(task.id)"
+    (completeTaskEvent)="onComplete(task.id)"
     (click)="onItemClick(task.id)"
   />
   } @empty {

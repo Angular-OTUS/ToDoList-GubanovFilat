@@ -38,20 +38,43 @@
 
 .todoIcon {
   margin-right: 10px;
+  color: teal;
+  font-size: 1.8rem;
 }
 
-:host ::ng-deep .deleteButton {
+:host ::ng-deep .deleteButton,
+:host ::ng-deep .completeButton {
   height: unset;
-  padding: unset;
+  padding: 0 7px;
   background-color: unset;
-
-  background-image: url("/icon-delete.png");
-  background-repeat: no-repeat;
-  background-position: center left;
-  background-size: 1.5rem 1.5rem;
-  padding-left: 25px;
+  color: lightgray;
 }
-:host ::ng-deep .deleteButton:hover {
+:host ::ng-deep .todo.completedTodo .deleteButton,
+:host ::ng-deep .todo.completedTodo .completeButton {
+  color: grey;
+}
+:host ::ng-deep .todo .deleteButton:hover {
+  filter: unset;
   color: red;
   transform: scale(1.3);
+}
+:host ::ng-deep .todo .completeButton:hover {
+  filter: unset;
+  color: green;
+  transform: scale(1.3);
+}
+:host ::ng-deep .todo.completedTodo .completeButton:hover {
+  filter: unset;
+  color: goldenrod;
+  transform: scale(1.3);
+}
+
+.completedTodo,
+.todo.completedTodo .todoIcon {
+  background-color: unset;
+  color: grey;
+}
+
+.completedTodo {
+  border: 1px solid grey;
 }

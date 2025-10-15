@@ -62,6 +62,24 @@ export class ToDoList implements OnInit {
     this.setFocusIntoTextarea();
   }
 
+  protected onComplete(taskId: string): void {
+    try {
+      this.taskService.toggleTaskCompletionState(taskId);
+
+      this.tasks.forEach((task) => {
+        if (task.id === taskId) {
+          task.isCompleted = !task.isCompleted;
+        }
+      });
+
+      this.toastService.success('Congratulations!', 'The task completion status has been changed successfully.');
+    } catch (error) {
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
+    }
+
+    this.setFocusIntoTextarea();
+  }
+
   protected onDelete(taskId: string): void {
     try {
       this.taskService.deleteTask(taskId);

@@ -9,4 +9,6 @@ export abstract class TaskService {
   ): Task;
 
   public abstract deleteTask(taskId: string): void;
+
+  public abstract toggleTaskCompletionState(taskId: string): void;
 }
