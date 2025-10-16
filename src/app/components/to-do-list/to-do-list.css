@@ -4,11 +4,16 @@
 
 :host ::ng-deep .filtersContainer .filterButton {
   background-color: unset;
-  color: lightgray;
+  color: white;
   border: none;
+}
+:host ::ng-deep .filtersContainer .filterButton:disabled {
+  color: grey;
 }
 :host ::ng-deep .filtersContainer .filterButton:hover {
   filter: unset;
+}
+:host ::ng-deep .filtersContainer .filterButton:hover:enabled {
   color: goldenrod;
   transform: scale(1.3);
 }

@@ -48,73 +48,80 @@ export class ToDoList implements OnInit {
 
   public ngOnInit(): void {
     setTimeout(() => {
-      try {
-        this.tasks = this.taskService.getTasks(this.filterUncompletedTasksOnlyIsEnabled);
-      } catch (error) {
-        this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
-      }
+      this.taskService
+        .getTasks(this.filterUncompletedTasksOnlyIsEnabled)
+        .subscribe({
+          next: (tasks: Task[]) => this.tasks = tasks,
+          error: () => this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.')
+        });
 
-      this.isLoading = false;
+      this.isLoading = false
     }, 1500);
   }
 
   protected onReload(): void {
-    try {
-      this.tasks = this.taskService.getTasks(this.filterUncompletedTasksOnlyIsEnabled);
+    this.taskService
+      .getTasks(this.filterUncompletedTasksOnlyIsEnabled)
+      .subscribe({
+        next: (tasks: Task[]) => {
+          this.tasks = tasks;
+          this.toastService.success('Congratulations!', 'The tasks information has been successfully reloaded from storage.');
+        },
+        error: () => this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.')
+      });
 
-      this.toastService.success('Congratulations!', 'The tasks information has been successfully reloaded from storage.');
-    } catch (error) {
-      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
-    }
-
-    this.setFocusIntoTextarea();
+    this.setFocusIntoTextarea()
   }
 
   protected onFilterUncompletedTasksOnlyToggle() {
     const filterUncompletedTasksOnlyIsEnabled = !this.filterUncompletedTasksOnlyIsEnabled;
 
-    try {
-      this.tasks = this.taskService.getTasks(filterUncompletedTasksOnlyIsEnabled);
+    this.taskService
+      .getTasks(filterUncompletedTasksOnlyIsEnabled)
+      .subscribe({
+        next: (tasks: Task[]) => {
+          this.tasks = tasks
 
-      this.toastService.success('Congratulations!', 'The new filter value has been successfully applied.');
+          this.toastService.success('Congratulations!', 'The new filter value has been successfully applied.');
 
-      this.filterUncompletedTasksOnlyIsEnabled = filterUncompletedTasksOnlyIsEnabled;
-      this.determineFilterUncompletedTasksOnlyLabel();
-    } catch (error) {
-      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
-    }
+          this.filterUncompletedTasksOnlyIsEnabled = filterUncompletedTasksOnlyIsEnabled;
+          this.determineFilterUncompletedTasksOnlyLabel();
+        },
+        error: () => this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.')
+      });
 
     this.setFocusIntoTextarea();
   }
 
   protected onComplete(taskId: string): void {
-    try {
-      this.taskService.toggleTaskCompletionState(taskId);
+    this.taskService
+      .toggleTaskCompletionState(taskId)
+      .subscribe({
+        next: () => {
+          this.tasks.forEach((task) => {
+            if (task.id === taskId) {
+              task.isCompleted = !task.isCompleted;
+            }
+          });
 
-      this.tasks.forEach((task) => {
-        if (task.id === taskId) {
-          task.isCompleted = !task.isCompleted;
-        }
+          this.toastService.success('Congratulations!', 'The task completion status has been changed successfully.');
+        },
+        error: () => this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.')
       });
-
-      this.toastService.success('Congratulations!', 'The task completion status has been changed successfully.');
-    } catch (error) {
-      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
-    }
 
     this.setFocusIntoTextarea();
   }
 
   protected onDelete(taskId: string): void {
-    try {
-      this.taskService.deleteTask(taskId);
-
-      this.tasks = this.tasks.filter((task) => task.id !== taskId);
-
-      this.toastService.success('Congratulations!', 'The task has been successfully deleted from storage.');
-    } catch (error) {
-      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
-    }
+    this.taskService
+      .deleteTask(taskId)
+      .subscribe({
+        next: () => {
+          this.tasks = this.tasks.filter((task) => task.id !== taskId);
+          this.toastService.success('Congratulations!', 'The task has been successfully deleted from storage.');
+        },
+        error: () => this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.')
+      });
 
     this.setFocusIntoTextarea();
   }
@@ -128,27 +135,28 @@ export class ToDoList implements OnInit {
       return;
     }
 
-    try {
-      const task = this.taskService.saveTask(this.taskId, this.taskDescription);
+    this.taskService
+      .saveTask(this.taskId, this.taskDescription)
+      .subscribe({
+        next: (task: Task) => {
+          if (!this.taskId) {
+            this.tasks.push(task);
+          } else {
+            const index = this.tasks.findIndex((item) => item.id === task.id);
+            if (index != -1) {
+              this.tasks[index] = task;
+            }
+          }
 
-      if (!this.taskId) {
-        this.tasks.push(task);
-      } else {
-        const index = this.tasks.findIndex((item) => item.id === task.id);
-        if (index != -1) {
-          this.tasks[index] = task;
-        }
-      }
+          this.taskDescription = '';
+          this.taskId = null;
 
-      this.taskDescription = '';
-      this.taskId = null;
+          this.inputPlaceholder = InputPlaceholder.ADD_NEW_TODO;
 
-      this.inputPlaceholder = InputPlaceholder.ADD_NEW_TODO;
-
-      this.toastService.success('Congratulations!', 'The task has been successfully saved to storage.');
-    } catch (error) {
-      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
-    }
+          this.toastService.success('Congratulations!', 'The task has been successfully saved to storage.');
+        },
+        error: () => this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.')
+      });
 
     this.setFocusIntoTextarea();
   }
