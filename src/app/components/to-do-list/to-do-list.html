@@ -1,5 +1,17 @@
 <h1>Todo List</h1>
 
+<div class="filtersContainer">
+  <app-button
+    className="filterButton"
+    type="button"
+    [disabled]="!!taskId"
+    appTooltip="Click here to change the filter value."
+    (click)="onFilterUncompletedTasksOnlyToggle()"
+  >
+    {{ filterUncompletedTasksOnlyLabel }}
+  </app-button>
+</div>
+
 @if(isLoading) {
 <app-loader />
 } @else {

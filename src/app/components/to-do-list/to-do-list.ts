@@ -14,6 +14,8 @@ enum InputPlaceholder {
   EDIT_TODO = 'Edit the task you have selected',
 }
 
+const FILTER_UNCOMPLETED_TASKS_ONLY_LABEL = "Load from storage uncompleted tasks only";
+
 @Component({
   selector: 'app-to-do-list',
   imports: [FormsModule, ToDoListItem, Loader, Button, Tooltip],
@@ -33,15 +35,21 @@ export class ToDoList implements OnInit {
 
   protected isLoading = true;
 
+  protected filterUncompletedTasksOnlyLabel = "";
+
+  private filterUncompletedTasksOnlyIsEnabled = true;
+
   constructor(
     private taskService: TaskService,
     private toastService: ToastService,
-  ) {}
+  ) {
+    this.determineFilterUncompletedTasksOnlyLabel();
+  }
 
   public ngOnInit(): void {
     setTimeout(() => {
       try {
-        this.tasks = this.taskService.getTasks();
+        this.tasks = this.taskService.getTasks(this.filterUncompletedTasksOnlyIsEnabled);
       } catch (error) {
         this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
       }
@@ -52,9 +60,26 @@ export class ToDoList implements OnInit {
 
   protected onReload(): void {
     try {
-      this.tasks = this.taskService.getTasks();
+      this.tasks = this.taskService.getTasks(this.filterUncompletedTasksOnlyIsEnabled);
 
       this.toastService.success('Congratulations!', 'The tasks information has been successfully reloaded from storage.');
+    } catch (error) {
+      this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
+    }
+
+    this.setFocusIntoTextarea();
+  }
+
+  protected onFilterUncompletedTasksOnlyToggle() {
+    const filterUncompletedTasksOnlyIsEnabled = !this.filterUncompletedTasksOnlyIsEnabled;
+
+    try {
+      this.tasks = this.taskService.getTasks(filterUncompletedTasksOnlyIsEnabled);
+
+      this.toastService.success('Congratulations!', 'The new filter value has been successfully applied.');
+
+      this.filterUncompletedTasksOnlyIsEnabled = filterUncompletedTasksOnlyIsEnabled;
+      this.determineFilterUncompletedTasksOnlyLabel();
     } catch (error) {
       this.toastService.error('We are really sorry!', 'Something went wrong when accessing storage.');
     }
@@ -149,5 +174,13 @@ export class ToDoList implements OnInit {
 
   private setFocusIntoTextarea() {
     (this.textarea.nativeElement as HTMLTextAreaElement).focus();
+  }
+
+  private determineFilterUncompletedTasksOnlyLabel() {
+    this.filterUncompletedTasksOnlyLabel =
+      this.filterUncompletedTasksOnlyIsEnabled
+        ? `${FILTER_UNCOMPLETED_TASKS_ONLY_LABEL}: YES`
+        : `${FILTER_UNCOMPLETED_TASKS_ONLY_LABEL}: NO`
+    ;
   }
 }

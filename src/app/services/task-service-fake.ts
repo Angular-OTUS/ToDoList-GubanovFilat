@@ -26,9 +26,17 @@ export class TaskServiceFake extends TaskService {
     return Math.random() > 0.5 ? true : false;
   }
 
-  public override getTasks(): Array<Task> {
+  public override getTasks(uncompletedTasksOnly: boolean): Array<Task> {
     if (!this.isSuccess()) {
       throw new Error();
+    }
+
+    if (uncompletedTasksOnly) {
+      return (
+        this.tasks
+          .filter((task) => !task.isCompleted)
+          .map((task) => task.clone())
+      );
     }
 
     return this.tasks.map((task) => task.clone());
