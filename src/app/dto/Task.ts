@@ -5,16 +5,19 @@ export class Task {
 
   description: string;
 
-  constructor(id: string, description: string) {
+  isCompleted: boolean;
+
+  private constructor(id: string, description: string, isCompleted: boolean) {
     this.id = id;
     this.description = description;
+    this.isCompleted = isCompleted;
   }
 
-  static of(description: string) {
-    return new Task(uuid(), description);
+  public static of(description: string) {
+    return new Task(uuid(), description, false);
   }
 
-  clone() {
-    return new Task(this.id, this.description);
+  public clone() {
+    return new Task(this.id, this.description, this.isCompleted);
   }
 }
