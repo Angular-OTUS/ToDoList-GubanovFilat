@@ -1,65 +1,44 @@
 <h1>Todo List</h1>
 
-<div class="filtersContainer">
+@if (isLoading$ | async) {
+  <app-loader />
+} @else {
+  <div class="filtersContainer">
+    <app-button
+      className="filterButton"
+      type="button"
+      [disabled]="!!selectedId"
+      appTooltip="Click here to change the filter value."
+      (click)="onFilterUncompletedTasksOnlyToggle()"
+    >
+      {{ filterUncompletedTasksOnlyLabel$ | async }}
+    </app-button>
+  </div>
+
+  <ul class="todoListContainer">
+    @for (task of tasks$ | async; track task.id) {
+      <app-to-do-list-item
+        [task]="task"
+        [isSelected]="task.id === selectedId"
+        (deleteTaskEvent)="onDelete(task.id)"
+        (completeTaskEvent)="onComplete(task.id)"
+        (click)="onItemClick(task.id)"
+      />
+    } @empty {
+      <li>Todo list is empty</li>
+    }
+  </ul>
+
+  <router-outlet />
+}
+
+<div class="buttons">
   <app-button
-    className="filterButton"
     type="button"
-    [disabled]="!!taskId"
-    appTooltip="Click here to change the filter value."
-    (click)="onFilterUncompletedTasksOnlyToggle()"
+    [disabled]="!!selectedId || !!(isLoading$ | async)"
+    appTooltip="Click on the button to reload data from the storage."
+    (click)="onReload()"
   >
-    {{ filterUncompletedTasksOnlyLabel }}
+    Reload from the storage
   </app-button>
 </div>
-
-@if(isLoading) {
-<app-loader />
-} @else {
-<ul class="todoListContainer">
-  @for (task of tasks; track task.id) {
-  <app-to-do-list-item
-    [task]="task"
-    [isSelected]="task.id === taskId"
-    (deleteTaskEvent)="onDelete(task.id)"
-    (completeTaskEvent)="onComplete(task.id)"
-    (click)="onItemClick(task.id)"
-  />
-  } @empty {
-  <li>Todo list is empty</li>
-  }
-</ul>
-
-<div class="todoFormContainer">
-  <form>
-    <textarea
-      #textarea
-      [placeholder]="inputPlaceholder"
-      [(ngModel)]="taskDescription"
-      [ngModelOptions]="{ standalone: true }"
-      (keydown)="onTextareaKeydown($event)"
-      autofocus
-      maxlength="130"
-      rows="2"
-      spellcheck="true"
-    ></textarea>
-    <div class="buttons">
-      <app-button
-        type="button"
-        [disabled]="!!taskId"
-        appTooltip="Click on the button to reload data from storage."
-        (click)="onReload()"
-      >
-        Reload from storage
-      </app-button>
-      <app-button
-        type="submit"
-        [disabled]="!taskDescription.trim()"
-        appTooltip="Click on the button to confirm the input."
-        (click)="onSave($event)"
-      >
-        Confirm
-      </app-button>
-    </div>
-  </form>
-</div>
-}

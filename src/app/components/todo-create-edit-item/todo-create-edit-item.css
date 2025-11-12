@@ -1,0 +1,33 @@
+.todoFormContainer {
+  margin-top: 30px;
+
+  form {
+    text-align: center;
+  }
+
+  textarea {
+    width: 100%;
+    resize: none;
+    overflow: auto;
+
+    padding: 10px 15px;
+
+    font-size: 1.5rem;
+
+    border: 3px solid transparent;
+    border-radius: 5px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .buttons {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+}
