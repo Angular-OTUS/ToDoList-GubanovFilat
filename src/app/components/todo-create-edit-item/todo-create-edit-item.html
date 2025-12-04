@@ -1,0 +1,27 @@
+<div class="todoFormContainer">
+  @if (backendErrors$ | async) {
+    <app-validation-errors [validationErrors]="backendErrors$ | async" />
+  }
+  <form>
+    <textarea
+      #textarea
+      [placeholder]="inputPlaceholder$ | async"
+      [(ngModel)]="taskDescription"
+      [ngModelOptions]="{ standalone: true }"
+      (keydown)="onTextareaKeydown($event)"
+      maxlength="130"
+      rows="2"
+      spellcheck="true"
+    ></textarea>
+    <div class="buttons">
+      <app-button
+        type="submit"
+        [disabled]="!taskDescription.trim()"
+        appTooltip="Click on the button to confirm the input."
+        (click)="onSave($event)"
+      >
+        Confirm
+      </app-button>
+    </div>
+  </form>
+</div>

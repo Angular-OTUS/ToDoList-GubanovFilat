@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { concatMap, Observable, of } from "rxjs";
+import { concatMap, delay, Observable, of } from 'rxjs';
 
 import { Task } from '../dto/Task';
-import { TaskService } from "./task-service";
+import { TaskService } from './task-service';
 
+const BASE_URL = 'http://localhost:3001';
 
-const BASE_URL = 'http://localhost:3001'
+const GET_TASKS_DELAY = 1500;
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class TaskServiceFakeHttp extends TaskService {
       url = `${url}?isCompleted=false`;
     }
 
-    return this.httpClient.get<Task[]>(url);
+    return this.httpClient.get<Task[]>(url).pipe(delay(GET_TASKS_DELAY));
   }
 
   public override saveTask(
